@@ -47,10 +47,6 @@ To contribute to this repository, follow these steps:
 
 Please note that by contributing to this repository, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md) of Horizon - GDSC IIT Madras. Ensure that your contributions align with the guidelines and values outlined in the Code of Conduct.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Questions or Concerns
 
 If you have any questions, concerns, or suggestions regarding this repository, feel free to open an issue or reach out to the repository owner or maintainers.
