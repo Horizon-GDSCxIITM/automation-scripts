@@ -37,7 +37,6 @@ unzip_file() {
 # Function 3: Encrypt and decrypt a file
 encrypt_decrypt_file() {
     local algorithm="aes-256-cbc"
-    local password="your_secret_password"
 
     if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
         echo "Usage: encrypt_decrypt_file <file_path>"
@@ -48,17 +47,22 @@ encrypt_decrypt_file() {
     local decrypted_file="$file_path.dec"
 
     if [ "$1" == "encrypt" ]; then
+        read -s -p "Enter root password for encryption: " root_password
+        echo
         echo "Encrypting file: $file_path"
-        openssl enc -$algorithm -salt -in "$file_path" -out "$encrypted_file" -k "$password"
+        openssl enc -$algorithm -salt -in "$file_path" -out "$encrypted_file" -k "$root_password"
         echo "Encryption completed."
     elif [ "$1" == "decrypt" ]; then
+        read -s -p "Enter root password for decryption: " root_password
+        echo
         echo "Decrypting file: $encrypted_file"
-        openssl enc -$algorithm -d -in "$encrypted_file" -out "$decrypted_file" -k "$password"
+        openssl enc -$algorithm -d -in "$encrypted_file" -out "$decrypted_file" -k "$root_password"
         echo "Decryption completed."
     else
         echo "Invalid operation. Use 'encrypt' or 'decrypt' as the first argument."
     fi
 }
+
 
 # Function 4: Count the number of occurrences of a specific word in a file
 count_word_occurrences() {
