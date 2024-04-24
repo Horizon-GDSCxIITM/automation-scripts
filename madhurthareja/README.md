@@ -15,8 +15,9 @@ This shell script utility provides several functions to perform common tasks suc
 - **Description:** This function unzips a specified zip file.
 
 #### 3. Encrypt and decrypt a file
+- **Always use as a super user**
 - **Function Name:** `encrypt_decrypt_file`
-- **Usage:** `encrypt_decrypt_file <file_path>`
+- **Usage:** `sudo encrypt_decrypt_file encrypt/decrypt <file_path>`
 - **Description:** This function allows encryption and decryption of a specified file using OpenSSL. It requires a password to perform the encryption/decryption.
 
 #### 4. Count the number of occurrences of a specific word in a file
