@@ -34,18 +34,30 @@ unzip_file() {
     echo "Unzip completed."
 }
 
-# Function 3: Encrypt and decrypt a file
+# Function 3: Encrypt and decrypt a file using sudo
+#
 encrypt_decrypt_file() {
+<<<<<<< HEAD
     local algorithm="aes-256-cbc"
+=======
+  local algorithm="aes-256-cbc"
+  local file_path="$2"
+  
+  if [ "$EUID" -ne 0 ]; then
+    echo "This function must be run as root." >&2
+    return 1
+  fi
+>>>>>>> a4e11ae (Added security to encrypt/decrypt function)
 
-    if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
-        echo "Usage: encrypt_decrypt_file <file_path>"
-        return
-    fi
+  if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
+    echo "Usage: encrypt_decrypt_file <encrypt|decrypt> <file_path>" >&2
+    return 1
+  fi
 
-    local encrypted_file="$file_path.enc"
-    local decrypted_file="$file_path.dec"
+  local encrypted_file="$file_path.enc"
+  local decrypted_file="$file_path.dec"
 
+<<<<<<< HEAD
     if [ "$1" == "encrypt" ]; then
         read -s -p "Enter root password for encryption: " root_password
         echo
@@ -58,9 +70,34 @@ encrypt_decrypt_file() {
         echo "Decrypting file: $encrypted_file"
         openssl enc -$algorithm -d -in "$encrypted_file" -out "$decrypted_file" -k "$root_password"
         echo "Decryption completed."
+=======
+  if [ "$1" == "encrypt" ]; then
+    read -s -p "Enter encryption password: " password
+    echo
+    echo "Encrypting file: $file_path"
+    openssl enc -$algorithm -salt -in "$file_path" -out "$encrypted_file" -pass pass:"$password"
+    if [ $? -eq 0 ]; then
+      echo "Encryption completed. Encrypted file: $encrypted_file"
+>>>>>>> a4e11ae (Added security to encrypt/decrypt function)
     else
-        echo "Invalid operation. Use 'encrypt' or 'decrypt' as the first argument."
+      echo "Encryption failed." >&2
+      return 1
     fi
+  elif [ "$1" == "decrypt" ]; then
+    echo "Decrypting file: $file_path"
+    read -s -p "Enter decryption password: " password
+    echo
+    openssl enc -$algorithm -d -in "$file_path" -out "$decrypted_file" -pass pass:"$password"
+    if [ $? -eq 0 ]; then
+      echo "Decryption completed. Decrypted file: $decrypted_file"
+    else
+      echo "Decryption failed." >&2
+      return 1
+    fi
+  else
+    echo "Invalid operation. Use 'encrypt' or 'decrypt' as the first argument." >&2
+    return 1
+  fi
 }
 
 
