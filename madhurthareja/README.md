@@ -33,7 +33,7 @@ This shell script utility provides several functions to perform common tasks suc
 
 3. **Run the script:** Execute the script by running the following command:
    ```
-   bash utility_script.sh
+   bash multifunc.sh
    ```
 
 4. **Choose an option:** Select an option from the provided menu:
