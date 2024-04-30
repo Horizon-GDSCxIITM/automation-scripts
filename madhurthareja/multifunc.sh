@@ -38,61 +38,48 @@ unzip_file() {
 #
 encrypt_decrypt_file() {
     local algorithm="aes-256-cbc"
-  local algorithm="aes-256-cbc"
-  local file_path="$2"
-  
-  if [ "$EUID" -ne 0 ]; then
-    echo "This function must be run as root." >&2
-    return 1
-  fi
+    local file_path="$2"
 
-  if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
-    echo "Usage: encrypt_decrypt_file <encrypt|decrypt> <file_path>" >&2
-    return 1
-  fi
+    if [ "$EUID" -ne 0 ]; then
+        echo "This function must be run as root." >&2
+        return 1
+    fi
 
-  local encrypted_file="$file_path.enc"
-  local decrypted_file="$file_path.dec"
+    if [ -z "$file_path" ] || [ ! -f "$file_path" ]; then
+        echo "Usage: encrypt_decrypt_file <encrypt|decrypt> <file_path>" >&2
+        return 1
+    fi
+
+    local encrypted_file="$file_path.enc"
+    local decrypted_file="$file_path.dec"
 
     if [ "$1" == "encrypt" ]; then
-        read -s -p "Enter root password for encryption: " root_password
+        read -s -p "Enter encryption password: " password
         echo
         echo "Encrypting file: $file_path"
-        openssl enc -$algorithm -salt -in "$file_path" -out "$encrypted_file" -k "$root_password"
-        echo "Encryption completed."
+        openssl enc -$algorithm -salt -in "$file_path" -out "$encrypted_file" -pass pass:"$password"
+        if [ $? -eq 0 ]; then
+            echo "Encryption completed. Encrypted file: $encrypted_file"
+        else
+            echo "Encryption failed." >&2
+            return 1
+        fi
     elif [ "$1" == "decrypt" ]; then
-        read -s -p "Enter root password for decryption: " root_password
-        echo
         echo "Decrypting file: $encrypted_file"
-        openssl enc -$algorithm -d -in "$encrypted_file" -out "$decrypted_file" -k "$root_password"
-        echo "Decryption completed."
-  if [ "$1" == "encrypt" ]; then
-    read -s -p "Enter encryption password: " password
-    echo
-    echo "Encrypting file: $file_path"
-    openssl enc -$algorithm -salt -in "$file_path" -out "$encrypted_file" -pass pass:"$password"
-    if [ $? -eq 0 ]; then
-      echo "Encryption completed. Encrypted file: $encrypted_file"
+        read -s -p "Enter decryption password: " password
+        echo
+        openssl enc -$algorithm -d -in "$encrypted_file" -out "$decrypted_file" -pass pass:"$password"
+        if [ $? -eq 0 ]; then
+            echo "Decryption completed. Decrypted file: $decrypted_file"
+        else
+            echo "Decryption failed." >&2
+            return 1
+        fi
     else
-      echo "Encryption failed." >&2
-      return 1
+        echo "Invalid operation. Use 'encrypt' or 'decrypt' as the first argument." >&2
+        return 1
     fi
-  elif [ "$1" == "decrypt" ]; then
-    echo "Decrypting file: $file_path"
-    read -s -p "Enter decryption password: " password
-    echo
-    openssl enc -$algorithm -d -in "$file_path" -out "$decrypted_file" -pass pass:"$password"
-    if [ $? -eq 0 ]; then
-      echo "Decryption completed. Decrypted file: $decrypted_file"
-    else
-      echo "Decryption failed." >&2
-      return 1
-    fi
-  else
-    echo "Invalid operation. Use 'encrypt' or 'decrypt' as the first argument." >&2
-    return 1
-  fi
-} 
+}
 
 
 # Function 4: Count the number of occurrences of a specific word in a file
