@@ -1,6 +1,6 @@
 # CV Extractor Django App
 
-This Django web application extracts emails and phone numbers from uploaded cvs or (PDF or DOCX files).
+This Django web application extracts emails and phone numbers in excel sheet from uploaded cvs or (PDF or DOCX files).
 
 ## How to Run
 
@@ -8,7 +8,7 @@ This Django web application extracts emails and phone numbers from uploaded cvs 
 
    ```bash
    git clone https://github.com/your-username/horizon-gdsc-automation-scripts.git
-   
+
 2. **Navigate to Shankjbs571:**
 
    ```bash
@@ -40,4 +40,4 @@ This Django web application extracts emails and phone numbers from uploaded cvs 
 
 ## **Access the application in your web browser at http://127.0.0.1:8000/cv_app/**
 
-## **Upload CV or any supported files to extract emails and phone numbers.**
+## **Upload CV or any supported files to extract emails and phone numbers as excel sheet.**
