@@ -4,11 +4,11 @@ This Django web application extracts emails and phone numbers from uploaded cvs 
 
 ## How to Run
 
-1. **Clone this repository:**
+1. **Clone this repository after fork:**
 
    ```bash
-   git clone https://github.com/your-username/Shankjbs571.git
-
+   git clone https://github.com/your-username/horizon-gdsc-automation-scripts.git
+   
 2. **Navigate to Shankjbs571:**
 
    ```bash
